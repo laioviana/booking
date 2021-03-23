@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Room {
-    private CategoryEnum category;
-    private Integer pricePaid;
+public class OptimizeResponse {
+
 }
