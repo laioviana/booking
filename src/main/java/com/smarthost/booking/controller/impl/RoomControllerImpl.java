@@ -20,7 +20,12 @@ public class RoomControllerImpl implements RoomController {
 
     @PostMapping("/optimize-rooms")
     public ResponseEntity<OptimizeResponse> optimizeRooms(@RequestBody OptimizeRequest optimizeRequest) {
+    if(!optimizeRequest.isEmpty()){
         return ResponseEntity.ok(roomService.optimizeRooms(optimizeRequest));
+    } else {
+        return ResponseEntity.noContent().build();
+    }
+
     }
 
 }

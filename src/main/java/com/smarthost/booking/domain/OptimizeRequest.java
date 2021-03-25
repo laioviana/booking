@@ -9,6 +9,12 @@ import java.util.List;
 @Setter
 public class OptimizeRequest {
     Integer roomAvailableEconomy;
+
     Integer roomAvailablePremium;
+
     List<Integer> potentialGuests;
+
+    public boolean isEmpty() {
+        return (this.roomAvailableEconomy == null && this.roomAvailablePremium == null && this.potentialGuests == null);
+    }
 }

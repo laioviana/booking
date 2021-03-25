@@ -10,15 +10,11 @@ import org.springframework.http.ResponseEntity;
 
 @Api("Room Controller")
 public interface RoomController {
-    @ApiOperation(value = "Optimize occupancy", response = OptimizeResponse[].class)
+    @ApiOperation(value = "Inform number of rooms for each category and potential guest offers", response = OptimizeResponse[].class)
     @ApiResponses(value = {
             @ApiResponse(code= 200, message = "Successful"),
-            @ApiResponse(code= 401, message = "Not Authorized"),
-            @ApiResponse(code = 404, message = "Not Found")
+            @ApiResponse(code= 204, message = "No Content"),
+            @ApiResponse(code = 500, message = "Internal Error")
     })
-/*    @ApiImplicitParams({ @ApiImplicitParam(name = "Authorization",
-            dataType = "string",
-            paramType = "header",
-            required = true) })*/
     ResponseEntity<OptimizeResponse> optimizeRooms(OptimizeRequest optimizeRequest);
 }
