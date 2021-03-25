@@ -21,7 +21,7 @@ class RoomServiceTest {
         OptimizeRequest optimizeRequest = new OptimizeRequest();
         optimizeRequest.setPotentialGuests(Arrays.asList(23, 45, 155, 374, 22, 99, 100, 101, 115, 209));
         OptimizeResponse optimizeResponse;
-        //TEST 1
+        //TEST CASE 1
         optimizeRequest.setRoomAvailableEconomy(3);
         optimizeRequest.setRoomAvailablePremium(3);
         optimizeResponse = roomService.optimizeRooms(optimizeRequest);
@@ -29,7 +29,7 @@ class RoomServiceTest {
         assertEquals(optimizeResponse.getAmountPaidPremium(),738);
         assertEquals(optimizeResponse.getUsageEconomy(),3);
         assertEquals(optimizeResponse.getUsagePremium(),3);
-        //TEST 2
+        //TEST CASE 2
         optimizeRequest.setRoomAvailableEconomy(5);
         optimizeRequest.setRoomAvailablePremium(7);
         optimizeResponse = roomService.optimizeRooms(optimizeRequest);
@@ -37,7 +37,7 @@ class RoomServiceTest {
         assertEquals(optimizeResponse.getAmountPaidPremium(),1054);
         assertEquals(optimizeResponse.getUsageEconomy(),4);
         assertEquals(optimizeResponse.getUsagePremium(),6);
-        //TEST 3
+        //TEST CASE 3
         optimizeRequest.setRoomAvailableEconomy(7);
         optimizeRequest.setRoomAvailablePremium(2);
         optimizeResponse = roomService.optimizeRooms(optimizeRequest);
@@ -45,7 +45,7 @@ class RoomServiceTest {
         assertEquals(optimizeResponse.getAmountPaidPremium(),583);
         assertEquals(optimizeResponse.getUsageEconomy(),4);
         assertEquals(optimizeResponse.getUsagePremium(),2);
-        //TEST 4
+        //TEST CASE 4
         optimizeRequest.setRoomAvailableEconomy(1);
         optimizeRequest.setRoomAvailablePremium(7);
         optimizeResponse = roomService.optimizeRooms(optimizeRequest);
