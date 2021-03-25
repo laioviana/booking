@@ -5,7 +5,9 @@ import com.smarthost.booking.domain.OptimizeResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
@@ -14,22 +16,24 @@ public class RoomService {
     public OptimizeResponse optimizeRooms(OptimizeRequest optimizeRequest) {
         List<Integer> economyRoomOffers = new ArrayList<>();
         List<Integer> premiumRoomOffers = new ArrayList<>();
-        List<Integer> potentialGuestOrdered = optimizeRequest.getPotentialGuests().stream().sorted().collect(Collectors.toList());
-
-        //Fetching offers to higher clients
-        potentialGuestOrdered.stream().filter(offer -> offer  >= 100).collect(Collectors.toList()).forEach(offer -> {
+        List<Integer> potentialGuestOrdered = optimizeRequest.getPotentialGuests().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        List<Integer> higherOffers = potentialGuestOrdered.stream().filter(offer -> offer  >= 100).sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        List<Integer> lowerOffers = potentialGuestOrdered.stream().filter(offer -> offer  < 100).sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        //optimizing higher clients to premium rooms
+        higherOffers.forEach(offer -> {
             if(premiumRoomOffers.size() < optimizeRequest.getRoomAvailablePremium()){
                 premiumRoomOffers.add(offer);
                 potentialGuestOrdered.remove(offer);
             }
         });
-
-        //Fetching offers to lower clients
-        potentialGuestOrdered.stream().filter(offer -> offer  < 100).collect(Collectors.toList()).forEach(offer ->
+        AtomicInteger economyLeftOver = new AtomicInteger(lowerOffers.size() - optimizeRequest.getRoomAvailableEconomy());
+        //optimizing lower  clients to premium/economy rooms
+        lowerOffers.forEach(offer ->
         {
-            if(premiumRoomOffers.size() < optimizeRequest.getRoomAvailablePremium()) {
+            if(economyLeftOver.get() > 0 && premiumRoomOffers.size() < optimizeRequest.getRoomAvailablePremium()) {
                 premiumRoomOffers.add(offer);
                 potentialGuestOrdered.remove(offer);
+                economyLeftOver.decrementAndGet();
             } else if(economyRoomOffers.size() < optimizeRequest.getRoomAvailableEconomy()){
                 economyRoomOffers.add(offer);
                 potentialGuestOrdered.remove(offer);
